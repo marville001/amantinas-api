@@ -9,6 +9,7 @@ const fileUpload = require("express-fileupload");
 var path = require('path');
 
 // App routes
+const authRoutes = require("./routes/auth");
 
 
 // Db connection
@@ -54,6 +55,7 @@ app.get("/", (req, res) => {
 });
 
 // Routes
+app.use("/v1/api/auth", authRoutes);
 
 
 // handling all (get,post,update,delete.....) unhandled routes
