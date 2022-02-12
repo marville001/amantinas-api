@@ -7,7 +7,6 @@ module.exports = {
     getUserDetails: catchAsync(async (req, res) => {
         const { email } = req.user;
         const user = await Investor.findOne({ email }).select("-password");
-        // select expiclity password
 
         res.status(200).json({
             success: true,
@@ -16,6 +15,7 @@ module.exports = {
             token: user.generateAuthToken(),
         });
     }),
+
     loginInvestor: catchAsync(async (req, res) => {
         const { email, password } = req.body;
         const user = await Investor.findOne({ email }).select("+password"); // select expiclity password
@@ -54,6 +54,7 @@ module.exports = {
             token: user.generateAuthToken(),
         });
     }),
+
     loginInvestorGoogle: catchAsync(async (req, res) => {
         if (!req.body.email)
             return res
@@ -90,6 +91,7 @@ module.exports = {
             token: user.generateAuthToken(),
         });
     }),
+
     loginInvestorFacebook: catchAsync(async (req, res) => {
         if (!req.body.email)
             return res
@@ -164,6 +166,7 @@ module.exports = {
             token: user.generateAuthToken(),
         });
     }),
+
     registerInvestorGoogle: catchAsync(async (req, res) => {
         if (!req.body.email)
             return res
@@ -207,6 +210,7 @@ module.exports = {
             token: user.generateAuthToken(),
         });
     }),
+
     registerInvestorFacebook: catchAsync(async (req, res) => {
         if (!req.body.email)
             return res
@@ -250,4 +254,5 @@ module.exports = {
             token: user.generateAuthToken(),
         });
     }),
+    
 };

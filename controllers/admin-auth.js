@@ -1,5 +1,7 @@
 const Admin = require("../models/Admin");
 const catchAsync = require("../utils/catchAsync");
+const bcrypt = require("bcrypt");
+const _ = require("lodash");
 
 module.exports = {
     getAdminDetails: catchAsync(async (req, res) => {
@@ -44,10 +46,41 @@ module.exports = {
                 "avatar",
                 "createdAt",
             ]),
-            token: user.generateAuthToken(),
+            token: admin.generateAuthToken(),
         });
     }),
     createAdmin: catchAsync(async (req, res) => {
-        res.send("Create Admin");
+        const { name, email, password } = req.body;
+
+        // Check if user email or username exists
+        let admin = await Admin.findOne({ email });
+        if (admin)
+            return res
+                .status(400)
+                .send({ success: false, message: "email already registered" });
+        admin = await Admin.create({
+            name,
+            email,
+            password,
+        });
+
+        const salt = await bcrypt.genSalt(10);
+        admin.password = await bcrypt.hash(admin.password, salt);
+
+        admin.save({ validateBeforeSave: false });
+
+        res.status(200).json({
+            success: true,
+            message: `Registration successfull.`,
+            admin: _.pick(admin, [
+                "_id",
+                "name",
+                "email",
+                "role",
+                "createdAt",
+                "activated",
+            ]),
+            token: admin.generateAuthToken(),
+        });
     }),
 };

@@ -8,14 +8,20 @@ const {
     adminLogin,
     createAdmin,
 } = require("../controllers/admin-auth");
-
+const schemaValidator = require("../middlewares/schemaValidator");
+const { loginSchema, registerSchema } = require("../schemas/auth");
 
 router.get("/me", auth, admin, getAdminDetails);
 
 // Login Route
-router.post("/login", auth, admin, adminLogin);
+router.post("/login", schemaValidator(loginSchema, "body"), adminLogin);
 
 // Register Route
-router.post("/register", auth, createAdmin);
+router.post(
+    "/register",
+    auth,
+    schemaValidator(registerSchema, "body"),
+    createAdmin
+);
 
 module.exports = router;
