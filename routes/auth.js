@@ -1,5 +1,9 @@
 const router = require("express").Router();
 
+// Middleware
+const auth = require("../middlewares/auth");
+
+// Controllers
 const {
     getUserDetails,
     loginInvestor,
@@ -9,18 +13,25 @@ const {
     registerInvestorGoogle,
     registerInvestorFacebook,
 } = require("../controllers/auth");
-const auth = require("../middlewares/auth");
+
+// Schema validators
+const schemaValidator = require("../middlewares/schemaValidator");
+const { loginSchema, registerSchema } = require("../schemas/auth");
 
 router.get("/me", auth, getUserDetails);
 
 // Login Routes
-router.post("/login", auth, loginInvestor);
-router.post("/login/google", auth, loginInvestorGoogle);
-router.post("/login/facebook", auth, loginInvestorFacebook);
+router.post("/login", schemaValidator(loginSchema, "body"), loginInvestor);
+router.post("/login/google", loginInvestorGoogle);
+router.post("/login/facebook", loginInvestorFacebook);
 
 // Register Routes
-router.post("/register", auth, registerInvestor);
-router.post("/register/google", auth, registerInvestorGoogle);
-router.post("/register/facebook", auth, registerInvestorFacebook);
+router.post(
+    "/register",
+    schemaValidator(registerSchema, "body"),
+    registerInvestor
+);
+router.post("/register/google", registerInvestorGoogle);
+router.post("/register/facebook", registerInvestorFacebook);
 
 module.exports = router;

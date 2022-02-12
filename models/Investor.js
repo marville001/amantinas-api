@@ -21,12 +21,17 @@ const investorSchema = new mongoose.Schema({
     role: {
         type: String,
         enum: ["investor", "admin"],
-        default: "user",
+        default: "investor",
     },
     plan: {
         type: String,
         enum: ["free", "elite", "pro"],
         default: "free",
+    },
+    loginType: {
+        type: String,
+        enum: ["email", "google", "facebook"],
+        default: "email",
     },
     password: {
         type: String,
