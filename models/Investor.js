@@ -35,8 +35,6 @@ const investorSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: [true, "Please provide a password"],
-        minlength: [8, "must be greater than 8"],
         select: false,
     },
     activationToken: {

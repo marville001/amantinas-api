@@ -23,7 +23,13 @@ module.exports = {
         if (!user)
             return res
                 .status(400)
-                .send({ success: false, message: "invalid email or password" });
+                .send({ success: false, message: "Wrong credentials" });
+
+        if (user.loginType !== "email")
+            return res.status(400).send({
+                success: false,
+                message: `Please login with ${user.loginType}`,
+            });
 
         let validPassword = await user.correctPassword(password, user.password);
         if (!validPassword)
@@ -32,7 +38,37 @@ module.exports = {
                 message: "Invalid email or password...",
             });
 
-        if (user.loginType !== "email")
+        res.status(200).json({
+            success: true,
+            message: `Login Successfull.`,
+            user: _.pick(user, [
+                "_id",
+                "name",
+                "plan",
+                "email",
+                "loginType",
+                "role",
+                "createdAt",
+                "activated",
+            ]),
+            token: user.generateAuthToken(),
+        });
+    }),
+    loginInvestorGoogle: catchAsync(async (req, res) => {
+        if (!req.body.email)
+            return res
+                .status(400)
+                .send({ success: false, message: "email is required" });
+
+        const { email } = req.body;
+        const user = await Investor.findOne({ email }).select("+password"); // select expiclity password
+
+        if (!user)
+            return res
+                .status(400)
+                .send({ success: false, message: "An account with the info does not exist. Please signup" });
+
+        if (user.loginType !== "google")
             return res.status(400).send({
                 success: false,
                 message: `Please login with ${user.loginType}`,
@@ -54,11 +90,41 @@ module.exports = {
             token: user.generateAuthToken(),
         });
     }),
-    loginInvestorGoogle: catchAsync(async (req, res) => {
-        res.send("Login Investor through google");
-    }),
     loginInvestorFacebook: catchAsync(async (req, res) => {
-        res.send("Login Investor through Facebook");
+        if (!req.body.email)
+            return res
+                .status(400)
+                .send({ success: false, message: "email is required" });
+                
+        const { email } = req.body;
+        const user = await Investor.findOne({ email }).select("+password"); // select expiclity password
+
+        if (!user)
+            return res
+                .status(400)
+                .send({ success: false, message: "An account with the info does not exist. Please signup" });
+
+        if (user.loginType !== "facebook")
+            return res.status(400).send({
+                success: false,
+                message: `Please login with ${user.loginType}`,
+            });
+
+        res.status(200).json({
+            success: true,
+            message: `Login Successfull.`,
+            user: _.pick(user, [
+                "_id",
+                "name",
+                "plan",
+                "email",
+                "loginType",
+                "role",
+                "createdAt",
+                "activated",
+            ]),
+            token: user.generateAuthToken(),
+        });
     }),
 
     registerInvestor: catchAsync(async (req, res) => {
@@ -99,9 +165,89 @@ module.exports = {
         });
     }),
     registerInvestorGoogle: catchAsync(async (req, res) => {
-        res.send("Register Investor through google");
+        if (!req.body.email)
+            return res
+                .status(400)
+                .send({ success: false, message: "email is required" });
+        if (!req.body.name)
+            return res
+                .status(400)
+                .send({ success: false, message: "Name is required" });
+
+        const { name, email } = req.body;
+
+        // Check if user email or username exists
+        let user = await Investor.findOne({ email });
+        if (user)
+            return res
+                .status(400)
+                .send({ success: false, message: "An account with that email already exists" });
+
+        user = await Investor.create({
+            name,
+            email,
+            loginType: "google",
+        });
+
+        user.save({ validateBeforeSave: false });
+
+        res.status(200).json({
+            success: true,
+            message: `Registration successfull.`,
+            user: _.pick(user, [
+                "_id",
+                "name",
+                "plan",
+                "email",
+                "loginType",
+                "role",
+                "createdAt",
+                "activated",
+            ]),
+            token: user.generateAuthToken(),
+        });
     }),
     registerInvestorFacebook: catchAsync(async (req, res) => {
-        res.send("Register Investor through Facebook");
+        if (!req.body.email)
+            return res
+                .status(400)
+                .send({ success: false, message: "email is required" });
+        if (!req.body.name)
+            return res
+                .status(400)
+                .send({ success: false, message: "Name is required" });
+
+        const { name, email } = req.body;
+
+        // Check if user email or username exists
+        let user = await Investor.findOne({ email });
+        if (user)
+            return res
+                .status(400)
+                .send({ success: false, message: "An account with that email already exists" });
+
+        user = await Investor.create({
+            name,
+            email,
+            loginType: "facebook",
+        });
+
+        user.save({ validateBeforeSave: false });
+
+        res.status(200).json({
+            success: true,
+            message: `Registration successfull.`,
+            user: _.pick(user, [
+                "_id",
+                "name",
+                "plan",
+                "email",
+                "loginType",
+                "role",
+                "createdAt",
+                "activated",
+            ]),
+            token: user.generateAuthToken(),
+        });
     }),
 };
