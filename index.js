@@ -11,6 +11,7 @@ var path = require("path");
 // App routes
 const authRoutes = require("./routes/auth");
 const adminAuthRoutes = require("./routes/admin-auth");
+const subUserRoutes = require("./routes/sub-users");
 
 // Db connection
 const DbConnect = require("./utils/dbConnect");
@@ -57,6 +58,7 @@ app.get("/", (req, res) => {
 // Routes
 app.use("/v1/api/auth", authRoutes);
 app.use("/v1/api/admin-auth", adminAuthRoutes);
+app.use("/v1/api/sub-user", subUserRoutes);
 
 // handling all (get,post,update,delete.....) unhandled routes
 app.all("*", (req, res, next) => {
