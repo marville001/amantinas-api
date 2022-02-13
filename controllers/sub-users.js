@@ -35,15 +35,8 @@ module.exports = {
 
         res.status(200).json({
             success: true,
-            message: `Registration successfull.`,
-            user: _.pick(subuser, [
-                "_id",
-                "name",
-                "email",
-                "role",
-                "createdAt",
-                "activated",
-            ]),
+            message: `Sub User Added successfully.`,
+            user: subuser,
         });
     }),
 };
