@@ -12,6 +12,7 @@ var path = require("path");
 const authRoutes = require("./routes/auth");
 const adminAuthRoutes = require("./routes/admin-auth");
 const subUserRoutes = require("./routes/sub-users");
+const scrapeRoutes = require("./routes/scrape");
 
 // Db connection
 const DbConnect = require("./utils/dbConnect");
@@ -59,6 +60,7 @@ app.get("/", (req, res) => {
 app.use("/v1/api/auth", authRoutes);
 app.use("/v1/api/admin-auth", adminAuthRoutes);
 app.use("/v1/api/sub-user", subUserRoutes);
+app.use("/v1/api/scrape", scrapeRoutes);
 
 // handling all (get,post,update,delete.....) unhandled routes
 app.all("*", (req, res, next) => {
