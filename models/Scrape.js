@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const scrapeSchema = new mongoose.Schema({
+    investorId: {
+        type: String,
+        required: true,
+    },
     country: {
         type: String,
         default: "",
