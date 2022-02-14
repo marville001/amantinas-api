@@ -17,11 +17,20 @@ module.exports = {
             message: `Successfull.`,
             scrapes,
         });
-
-        res.send({ scrapes: [] });
     }),
 
     createScrape: catchAsync(async (req, res) => {
-        res.send({ scrapes: [] });
+        const { investorId } = req.body;
+        const scrapes = await Scrape.find({ investorId });
+
+        scrape = await Scrape.create(req.body);
+
+        scrape.save({ validateBeforeSave: false });
+
+        res.status(200).json({
+            success: true,
+            message: `Scrape Added successfully.`,
+            scrape,
+        });
     }),
 };
