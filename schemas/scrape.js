@@ -10,7 +10,7 @@ module.exports = {
         address: Joi.string().allow(""),
         since: Joi.string().allow(""),
         type: Joi.string().allow(""),
-        priceRange: Joi.array(),
+        pricerange: Joi.array(),
         squarefeets: Joi.array(),
         bedrooms: Joi.number().allow(""),
         bathrooms: Joi.number().allow(""),
