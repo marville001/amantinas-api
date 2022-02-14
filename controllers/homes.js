@@ -4,12 +4,7 @@ const crypto = require("crypto");
 
 module.exports = {
     getHomes: catchAsync(async (req, res) => {
-        if (!req.body.investorId)
-            return res.status(400).send({
-                success: false,
-                message: "Please provide investor id",
-            });
-        const { investorId } = req.body;
+        const { investorId } = req.params;
         const homes = await Home.find({
             investorId
         });

@@ -8,7 +8,7 @@ const {
 const schemaValidator = require("../middlewares/schemaValidator");
 const { createProspectSchema } = require("../schemas/homes");
 
-router.get("/", auth, getHomes);
+router.get("/:investorId", auth, getHomes);
 
 // Add sub user Route
 router.post("/prospects", auth, schemaValidator(createProspectSchema, "body"), createProspect);
