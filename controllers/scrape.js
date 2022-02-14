@@ -6,7 +6,7 @@ module.exports = {
         if (!req.body.investorId)
             return res.status(400).send({
                 success: false,
-                message: "Please investor id",
+                message: "Please provide investor id",
             });
         const { investorId } = req.body;
         const scrapes = await Scrape.find({ investorId });

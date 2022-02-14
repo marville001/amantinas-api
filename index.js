@@ -13,6 +13,7 @@ const authRoutes = require("./routes/auth");
 const adminAuthRoutes = require("./routes/admin-auth");
 const subUserRoutes = require("./routes/sub-users");
 const scrapeRoutes = require("./routes/scrape");
+const homesRoutes = require("./routes/homes");
 
 // Db connection
 const DbConnect = require("./utils/dbConnect");
@@ -61,6 +62,7 @@ app.use("/v1/api/auth", authRoutes);
 app.use("/v1/api/admin-auth", adminAuthRoutes);
 app.use("/v1/api/sub-user", subUserRoutes);
 app.use("/v1/api/scrape", scrapeRoutes);
+app.use("/v1/api/homes", homesRoutes);
 
 // handling all (get,post,update,delete.....) unhandled routes
 app.all("*", (req, res, next) => {

@@ -10,7 +10,7 @@ const homesSchema = new mongoose.Schema({
         required: true,
     },
     category: {
-        type: Boolean,
+        type: String,
         enum: ["prospect", "active", "managed", "archived", "scrapped"],
         required: true,
     },
