@@ -28,13 +28,13 @@ module.exports = {
     voteSuggestion: catchAsync(async (req, res) => {
         const { userId, suggestionId, vote: v } = req.body;
         let vote = await Vote.find({ userId, suggestionId });
-        
+
         if (vote.length > 0)
             return res
                 .status(400)
                 .send({ success: false, message: "You have alreasy voted" });
 
-        vote = await Vote.create({userId, suggestionId});
+        vote = await Vote.create({ userId, suggestionId });
 
         vote.save({ validateBeforeSave: false });
 
@@ -43,6 +43,34 @@ module.exports = {
             {
                 $set: {
                     vote: v,
+                },
+            },
+            {
+                new: true,
+                runValidators: true,
+            }
+        );
+
+        res.status(200).json({
+            success: true,
+            message: `Successfull.`,
+            suggestion,
+        });
+    }),
+    updateSuggestionColumn: catchAsync(async (req, res) => {
+        const { suggestionId, column } = req.body;
+        let suggestion = await Suggestion.find({ _id: suggestionId });
+
+        if (!suggestion)
+            return res
+                .status(400)
+                .send({ success: false, message: "Invalid suggestion" });
+
+        suggestion = await Suggestion.findByIdAndUpdate(
+            suggestionId,
+            {
+                $set: {
+                    column,
                 },
             },
             {

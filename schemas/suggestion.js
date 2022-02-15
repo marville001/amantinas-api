@@ -12,4 +12,8 @@ module.exports = {
         suggestionId: Joi.string().required(),
         vote: Joi.number().required(),
     }),
+    columnUpdateSchema: Joi.object().keys({
+        column: Joi.string().required(),
+        suggestionId: Joi.string().required(),
+    }),
 };
