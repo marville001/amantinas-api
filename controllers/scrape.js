@@ -20,10 +20,7 @@ module.exports = {
     }),
 
     createScrape: catchAsync(async (req, res) => {
-        const { investorId } = req.body;
-        const scrapes = await Scrape.find({ investorId });
-
-        scrape = await Scrape.create(req.body);
+        const scrape = await Scrape.create(req.body);
 
         scrape.save({ validateBeforeSave: false });
 
