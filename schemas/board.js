@@ -9,4 +9,7 @@ module.exports = {
     getBoardsSchema: Joi.object().keys({
         investorId: Joi.string().required(),
     }),
+    renameColumnSchema: Joi.object().keys({
+        name: Joi.string().required(),
+    }),
 };

@@ -62,4 +62,33 @@ module.exports = {
             columns: columnsData,
         });
     }),
+
+    renameColumn: catchAsync(async (req, res) => {
+        const { columnId } = req.params;
+        let column = await BoardColumn.find({ _id: columnId });
+
+        if (!column)
+            return res
+                .status(400)
+                .send({ success: false, message: "Invalid column id" });
+
+        column = await BoardColumn.findByIdAndUpdate(
+            columnId,
+            {
+                $set: {
+                    name: req.body.name,
+                },
+            },
+            {
+                new: true,
+                runValidators: true,
+            }
+        );
+
+        res.status(200).json({
+            success: true,
+            message: `Successfull.`,
+            column,
+        });
+    }),
 };
