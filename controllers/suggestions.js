@@ -85,4 +85,27 @@ module.exports = {
             suggestion,
         });
     }),
+
+    deleteSuggestion: catchAsync(async (req, res) => {
+        if (!req.body.suggestionId)
+            return res
+                .status(400)
+                .send({ success: false, message: "Provide id" });
+
+        const { suggestionId } = req.body;
+
+        let suggestion = await Suggestion.find({ _id: suggestionId });
+
+        if (!suggestion)
+            return res
+                .status(400)
+                .send({ success: false, message: "Invalid suggestion" });
+
+        await Suggestion.findByIdAndDelete(suggestionId);
+
+        res.status(200).json({
+            success: true,
+            message: `Deleted Successfully.`
+        });
+    }),
 };
