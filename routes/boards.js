@@ -8,8 +8,8 @@ const { getBoardsSchema, createBoardSchema } = require("../schemas/board");
 
 const { getBoards,getBoard, createBoard } = require("../controllers/board");
 
-router.get("/", auth,  schemaValidator(getBoardsSchema, "body"), getBoards);
-router.get("/:boardId", auth,  schemaValidator(getBoardsSchema, "body"), getBoard);
+router.get("/", auth,  schemaValidator(getBoardsSchema, "query"), getBoards);
+router.get("/:boardId", auth,  schemaValidator(getBoardsSchema, "query"), getBoard);
 
 router.post("/", auth, schemaValidator(createBoardSchema, "body"), createBoard);
 

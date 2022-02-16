@@ -4,7 +4,7 @@ const catchAsync = require("../utils/catchAsync");
 
 module.exports = {
     getBoards: catchAsync(async (req, res) => {
-        const { investorId } = req.body;
+        const { investorId } = req.query;
         const boards = await Board.find({ investorId });
 
         res.status(200).json({
@@ -14,7 +14,7 @@ module.exports = {
         });
     }),
     getBoard: catchAsync(async (req, res) => {
-        const { investorId } = req.body;
+        const { investorId } = req.query;
         const { boardId } = req.params;
         const boards = await Board.find({ investorId, _id: boardId });
 

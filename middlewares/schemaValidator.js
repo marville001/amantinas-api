@@ -1,5 +1,6 @@
 const Joi = require("joi");
 const schemaValidator = (schema, property) => (req, res, next) => {
+  console.log(req[property]);
   const { error } = schema.validate(req[property]);
 
   if (error)
