@@ -10,7 +10,6 @@ const { createProspectSchema } = require("../schemas/homes");
 
 router.get("/:investorId", auth, getHomes);
 
-// Add sub user Route
 router.post("/prospects", auth, schemaValidator(createProspectSchema, "body"), createProspect);
 
 

@@ -8,7 +8,6 @@ module.exports = {
         const homes = await Home.find({
             investorId
         });
-        // select expiclity password
 
         res.status(200).json({
             success: true,

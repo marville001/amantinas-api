@@ -9,7 +9,6 @@ const { createScrapeSchema } = require("../schemas/scrape");
 
 router.get("/", auth, getScrapes);
 
-// Add sub user Route
 router.post(
     "/",
     auth,
