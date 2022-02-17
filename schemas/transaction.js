@@ -3,7 +3,12 @@ const Joi = require("joi");
 module.exports = {
     createTransactionSchema: Joi.object().keys({
         investorId: Joi.string().required(),
-        homeId: Joi.string().required(),
+        homeId: Joi.string()
+            .required()
+            .error((errors) => {
+                errors.forEach((err) => (err.message = "Please select a home"));
+                return errors;
+            }),
         title: Joi.string().required(),
         description: Joi.string().required(),
         amount: Joi.number().required(),
