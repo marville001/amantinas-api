@@ -6,7 +6,7 @@ module.exports = {
     getHomes: catchAsync(async (req, res) => {
         const { investorId } = req.params;
         const homes = await Home.find({
-            investorId
+            investorId,
         });
 
         res.status(200).json({
@@ -58,6 +58,33 @@ module.exports = {
             success: true,
             message: `Prospect Added successfully.`,
             prospect,
+        });
+    }),
+
+    updateProspect: catchAsync(async (req, res) => {
+        const { homeId } = req.params;
+        let home = await Home.findById(homeId);
+
+        if (!home)
+            return res
+                .status(400)
+                .send({ success: false, message: "Invalid home Id" });
+
+        home = await Home.findByIdAndUpdate(
+            homeId,
+            {
+                $set: req.body,
+            },
+            {
+                new: true,
+                runValidators: true,
+            }
+        );
+
+        res.status(200).json({
+            success: true,
+            message: `Successfull.`,
+            home,
         });
     }),
 };

@@ -11,7 +11,7 @@ const homesSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        enum: ["prospect", "active", "managed", "archived", "scrapped"],
+        enum: ["prospect", "scrapped"],
         required: true,
     },
     name: {
@@ -41,6 +41,18 @@ const homesSchema = new mongoose.Schema({
     createdAt: {
         type: String,
         default: Date.now(),
+    },
+    isManaged: {
+        type: Boolean,
+        default: false,
+    },
+    isActive: {
+        type: Boolean,
+        default: false,
+    },
+    isArchived: {
+        type: Boolean,
+        default: false,
     },
 });
 
