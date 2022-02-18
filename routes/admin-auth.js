@@ -11,7 +11,7 @@ const {
 const schemaValidator = require("../middlewares/schemaValidator");
 const { loginSchema, registerSchema } = require("../schemas/auth");
 
-router.get("/me", auth, admin, getAdminDetails);
+router.get("/me", auth, getAdminDetails);
 
 // Login Route
 router.post("/login", schemaValidator(loginSchema, "body"), adminLogin);
