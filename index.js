@@ -17,6 +17,7 @@ const homesRoutes = require("./routes/homes");
 const suggestionsRoutes = require("./routes/suggestions");
 const boardsRoutes = require("./routes/boards");
 const transactionsRoutes = require("./routes/transactions");
+const usersRoutes = require("./routes/users");
 
 // Db connection
 const DbConnect = require("./utils/dbConnect");
@@ -69,6 +70,7 @@ app.use("/v1/api/homes", homesRoutes);
 app.use("/v1/api/suggestions", suggestionsRoutes);
 app.use("/v1/api/boards", boardsRoutes);
 app.use("/v1/api/transactions", transactionsRoutes);
+app.use("/v1/api/users", usersRoutes);
 
 
 // handling all (get,post,update,delete.....) unhandled routes
