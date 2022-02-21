@@ -2,6 +2,8 @@ const Board = require("../models/Board");
 const BoardColumn = require("../models/BoardColumn");
 const catchAsync = require("../utils/catchAsync");
 
+const crypto = require("crypto");
+
 module.exports = {
     getBoards: catchAsync(async (req, res) => {
         const { investorId } = req.query;
@@ -88,6 +90,55 @@ module.exports = {
         res.status(200).json({
             success: true,
             message: `Successfull.`,
+            column,
+        });
+    }),
+
+    createBoardColumnItem: catchAsync(async (req, res) => {
+        let column = await BoardColumn.findById(req.body.columnId);
+
+        if (!column)
+            return res
+                .status(400)
+                .send({ success: false, message: "Invalid column id" });
+
+        let imageLink = "";
+        if (req.files && req.files.image) {
+            const id = crypto.randomBytes(8).toString("hex");
+
+            const { image } = req.files;
+            imageLink = `${id + "_" + image.name}`;
+            image.mv(`uploads/${imageLink}`);
+        }
+
+        const { title, description, columnId } = req.body;
+
+        console.log(column);
+
+        const items = [
+            ...column.items,
+            {
+                title,
+                image: imageLink,
+                description,
+            },
+        ];
+
+        column = await BoardColumn.findByIdAndUpdate(
+            columnId,
+            {
+                $set: {
+                    items,
+                },
+            },
+            {
+                new: true,
+                runValidators: true,
+            }
+        );
+        res.status(200).json({
+            success: true,
+            message: `Item Added successfully.`,
             column,
         });
     }),

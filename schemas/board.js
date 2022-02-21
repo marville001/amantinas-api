@@ -12,4 +12,9 @@ module.exports = {
     renameColumnSchema: Joi.object().keys({
         name: Joi.string().required(),
     }),
+    createBoardColumnItemSchema: Joi.object().keys({
+        columnId: Joi.string().required(),
+        title: Joi.string().required(),
+        description: Joi.string().required()
+    }),
 };
