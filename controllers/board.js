@@ -173,8 +173,12 @@ module.exports = {
         );
 
         // Add item to "to" column
-        columnTo.items.splice(index, 0, item);
-        items = columnTo.items
+        if (from === to) {
+            items.splice(index, 0, item);
+        } else {
+            columnTo.items.splice(index, 0, item);
+            items = columnTo.items;
+        }
         const column = await BoardColumn.findByIdAndUpdate(
             to,
             {
