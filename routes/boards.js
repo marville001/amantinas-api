@@ -9,6 +9,7 @@ const {
     createBoardSchema,
     renameColumnSchema,
     createBoardColumnItemSchema,
+    updateBoardColumnItemSchema,
 } = require("../schemas/board");
 
 const {
@@ -17,6 +18,7 @@ const {
     createBoard,
     renameColumn,
     createBoardColumnItem,
+    updateBoardItemColumn,
 } = require("../controllers/board");
 
 router.get("/", auth, schemaValidator(getBoardsSchema, "query"), getBoards);
@@ -37,10 +39,19 @@ router.post(
 );
 
 router.put(
+    "/column/item/position",
+    auth,
+    schemaValidator(updateBoardColumnItemSchema, "body"),
+    updateBoardItemColumn
+);
+
+router.put(
     "/column-name/:columnId",
     auth,
     schemaValidator(renameColumnSchema, "body"),
     renameColumn
 );
+
+
 
 module.exports = router;

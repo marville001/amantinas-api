@@ -15,6 +15,12 @@ module.exports = {
     createBoardColumnItemSchema: Joi.object().keys({
         columnId: Joi.string().required(),
         title: Joi.string().required(),
-        description: Joi.string().required()
+        description: Joi.string().required(),
+    }),
+    updateBoardColumnItemSchema: Joi.object().keys({
+        itemId: Joi.string().required(),
+        from: Joi.string().required(),
+        to: Joi.string().required(),
+        index: Joi.number().required(),
     }),
 };

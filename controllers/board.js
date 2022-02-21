@@ -112,8 +112,6 @@ module.exports = {
 
         const { title, description, columnId } = req.body;
 
-        console.log(column);
-
         const items = [
             ...column.items,
             {
@@ -139,6 +137,60 @@ module.exports = {
         res.status(200).json({
             success: true,
             message: `Item Added successfully.`,
+            column,
+        });
+    }),
+
+    updateBoardItemColumn: catchAsync(async (req, res) => {
+        const { from, to, index, itemId } = req.body;
+        let columnFrom = await BoardColumn.findById(from);
+        let columnTo = await BoardColumn.findById(to);
+
+        let items = [];
+
+        if (!columnFrom || !columnTo)
+            return res
+                .status(400)
+                .send({ success: false, message: "Invalid column id" });
+
+        // Get item - getting it from "from" column
+        const item = columnFrom.items.find((item) => item._id === itemId);
+
+        //Remove item from "from" column
+        items = [...columnFrom.items.filter((item) => item._id !== itemId)];
+
+        await BoardColumn.findByIdAndUpdate(
+            from,
+            {
+                $set: {
+                    items,
+                },
+            },
+            {
+                new: true,
+                runValidators: true,
+            }
+        );
+
+        // Add item to "to" column
+        columnTo.items.splice(index, 0, item);
+        items = columnTo.items
+        const column = await BoardColumn.findByIdAndUpdate(
+            to,
+            {
+                $set: {
+                    items,
+                },
+            },
+            {
+                new: true,
+                runValidators: true,
+            }
+        );
+
+        res.status(200).json({
+            success: true,
+            message: `Successfull.`,
             column,
         });
     }),
