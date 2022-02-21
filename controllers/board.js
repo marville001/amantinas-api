@@ -103,9 +103,8 @@ module.exports = {
                 .send({ success: false, message: "Invalid column id" });
 
         let imageLink = "";
+        const id = crypto.randomBytes(8).toString("hex");
         if (req.files && req.files.image) {
-            const id = crypto.randomBytes(8).toString("hex");
-
             const { image } = req.files;
             imageLink = `${id + "_" + image.name}`;
             image.mv(`uploads/${imageLink}`);
@@ -121,6 +120,7 @@ module.exports = {
                 title,
                 image: imageLink,
                 description,
+                _id: id,
             },
         ];
 
