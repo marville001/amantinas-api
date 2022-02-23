@@ -9,6 +9,6 @@ const { logTimeIn, getTimeLog, logTimeOut } = require("../controllers/time-log")
 router.get("/:userId", auth, getTimeLog);
 
 router.post("/in/", auth, schemaValidator(timeInSchema, "body"), logTimeIn);
-router.post("/out/:id", auth, schemaValidator(timeOutSchema, "body"), logTimeOut);
+router.put("/out/:id", auth, schemaValidator(timeOutSchema, "body"), logTimeOut);
 
 module.exports = router;
