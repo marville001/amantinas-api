@@ -30,4 +30,13 @@ module.exports = {
             message: `Deleted Successfull.`,
         });
     }),
+    deleteInvestor: catchAsync(async (req, res) => {
+        const {id} = req.params;
+        await Investor.findByIdAndDelete(id)
+
+        res.status(200).json({
+            success: true,
+            message: `Deleted Successfull.`,
+        });
+    }),
 };
