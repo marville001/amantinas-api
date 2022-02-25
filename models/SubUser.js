@@ -63,8 +63,7 @@ const subUserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        select: false,
-        trim: true,
+        default: "",
     },
     activationToken: {
         type: String,
@@ -85,6 +84,36 @@ const subUserSchema = new mongoose.Schema({
             "https://www.kindpng.com/picc/m/207-2074624_white-gray-circle-avatar-png-transparent-png.png",
     },
 });
+
+// Method for creating an activation link token
+subUserSchema.methods.createAccountActivationLink = function () {
+    const activationToken = crypto.randomBytes(32).toString("hex");
+    this.activationLink = crypto
+        .createHash("sha256")
+        .update(activationToken)
+        .digest("hex");
+    return activationToken;
+};
+
+// comparing password
+subUserSchema.methods.correctPassword = async function (
+    candidate_Password,
+    user_Password
+) {
+    return await bcrypt.compare(candidate_Password, user_Password);
+};
+
+// Method for generating a reset token
+subUserSchema.methods.createPasswordResetToken = function () {
+    const resetToken = crypto.randomBytes(32).toString("hex");
+
+    this.passwordResetToken = crypto
+        .createHash("sha256")
+        .update(resetToken)
+        .digest("hex");
+    this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+    return resetToken;
+};
 
 const SubUser = mongoose.model("SubUser", subUserSchema);
 module.exports = SubUser;
