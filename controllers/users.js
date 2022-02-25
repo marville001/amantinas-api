@@ -11,4 +11,13 @@ module.exports = {
             admins,
         });
     }),
+    deleteAdmin: catchAsync(async (req, res) => {
+        const {id} = req.params;
+        await Admin.findByIdAndDelete(id)
+
+        res.status(200).json({
+            success: true,
+            message: `Deleted Successfull.`,
+        });
+    }),
 };
