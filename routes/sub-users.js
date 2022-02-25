@@ -3,15 +3,16 @@ const router = require("express").Router();
 const auth = require("../middlewares/auth");
 
 const {
-    getSubUsers, createSubUser
+    getSubUsers, createSubUser, activateSubUser
 } = require("../controllers/sub-users");
 const schemaValidator = require("../middlewares/schemaValidator");
-const { createSubUserSchema } = require("../schemas/sub-user");
+const { createSubUserSchema, activateSubUserSchema } = require("../schemas/sub-user");
 
 router.get("/get", auth, getSubUsers);
 
 // Add sub user Route
 router.post("/add", auth, schemaValidator(createSubUserSchema, "body"), createSubUser);
+router.post("/activate/:token", schemaValidator(activateSubUserSchema, "body"),  activateSubUser);
 
 
 module.exports = router;

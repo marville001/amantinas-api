@@ -1,5 +1,7 @@
 const catchAsync = require("../utils/catchAsync");
 const _ = require("lodash");
+const crypto = require("crypto");
+const bcrypt = require("bcrypt");
 const SubUser = require("../models/SubUser");
 const Investor = require("../models/Investor");
 const sendEmail = require("../utils/sendEmail");
@@ -55,6 +57,37 @@ module.exports = {
         res.status(200).json({
             success: true,
             message: `Sub User Added successfully and activation email sent.`,
+            user: subuser,
+        });
+    }),
+
+    activateSubUser: catchAsync(async (req, res) => {
+        const hashedToken = crypto
+            .createHash("sha256")
+            .update(req.params.token)
+            .digest("hex");
+
+        const subuser = await SubUser.findOne({
+            activationToken: hashedToken,
+        });
+
+        if (!subuser)
+            return res.status(400).send({
+                success: false,
+                message: "Activation Link Invalid or Expired!",
+            });
+
+        const salt = await bcrypt.genSalt(10);
+
+        subuser.activated = true;
+        subuser.password = await bcrypt.hash(req.body.password, salt);
+        subuser.activationToken = "";
+        await subuser.save({ validateBeforeSave: false });
+
+        delete subuser.password
+
+        res.send({
+            success: true,
             user: subuser,
         });
     }),

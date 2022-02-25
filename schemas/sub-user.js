@@ -12,4 +12,7 @@ module.exports = {
         satToTime: Joi.string().required(),
         sundayFree: Joi.boolean().required(),
     }),
+    activateSubUserSchema: Joi.object().keys({
+        password: Joi.string().min(8).required(),
+    }),
 };
