@@ -60,12 +60,10 @@ adminSchema.methods.generateAuthToken = function () {
 
 adminSchema.methods.createAccountActivationToken = function () {
     const activationToken = crypto.randomBytes(32).toString("hex");
-    // console.log(activationToken);
     this.activationToken = crypto
         .createHash("sha256")
         .update(activationToken)
         .digest("hex");
-    // console.log({ activationToken }, this.activationLink);
     return activationToken;
 };
 
@@ -80,8 +78,6 @@ adminSchema.methods.correctPassword = async function (
 // Create a reset token for each user
 adminSchema.methods.createPasswordResetToken = function () {
     const resetToken = crypto.randomBytes(32).toString("hex");
-
-    console.log({ resetToken });
 
     this.passwordResetToken = crypto
         .createHash("sha256")
