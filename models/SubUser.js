@@ -67,6 +67,7 @@ const subUserSchema = new mongoose.Schema({
     },
     activationToken: {
         type: String,
+        default:""
     },
     passwordResetToken: String,
     passwordResetExpires: Date,
@@ -88,7 +89,7 @@ const subUserSchema = new mongoose.Schema({
 // Method for creating an activation link token
 subUserSchema.methods.createAccountActivationLink = function () {
     const activationToken = crypto.randomBytes(32).toString("hex");
-    this.activationLink = crypto
+    this.activationToken = crypto
         .createHash("sha256")
         .update(activationToken)
         .digest("hex");
