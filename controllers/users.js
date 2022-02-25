@@ -1,4 +1,5 @@
 const Admin = require("../models/Admin");
+const Investor = require("../models/Investor");
 const catchAsync = require("../utils/catchAsync");
 
 module.exports = {
@@ -7,8 +8,17 @@ module.exports = {
 
         res.status(200).json({
             success: true,
-            message: `Login Successfull.`,
+            message: `Successfull.`,
             admins,
+        });
+    }),
+    getInvestors: catchAsync(async (req, res) => {
+        const investors = await Investor.find().select("-password");
+
+        res.status(200).json({
+            success: true,
+            message: `Successfull.`,
+            investors,
         });
     }),
     deleteAdmin: catchAsync(async (req, res) => {
