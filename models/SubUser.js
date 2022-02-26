@@ -31,6 +31,14 @@ const subUserSchema = new mongoose.Schema({
         trim: true,
         lowercase: true,
     },
+    type: {
+        type: String,
+        default:"subuser"
+    },
+    investorId: {
+        type: String,
+        required: true
+    },
     weekDayFromTime: {
         type: String,
         required: true,

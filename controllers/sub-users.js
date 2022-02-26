@@ -5,10 +5,12 @@ const bcrypt = require("bcrypt");
 const SubUser = require("../models/SubUser");
 const Investor = require("../models/Investor");
 const sendEmail = require("../utils/sendEmail");
+const signToken = require("../utils/signToken");
 
 module.exports = {
     getSubUsers: catchAsync(async (req, res) => {
-        const subusers = await SubUser.find().select("-password");
+
+        const subusers = await SubUser.find({investorId: req.params.investorId}).select("-password");
         // select expiclity password
 
         res.status(200).json({
@@ -48,7 +50,7 @@ module.exports = {
             html: `
             <h2>Hello <strong> ${req.body.firstname}</strong></h2>
             </br>
-            <a href="${process.env.APP_URL}set-pass?token=${activationToken}">Click here to create password</a>
+            <a href="${process.env.APP_URL}set-pass/${activationToken}">Click here to create password</a>
             `,
         });
 
@@ -84,11 +86,13 @@ module.exports = {
         subuser.activationToken = "";
         await subuser.save({ validateBeforeSave: false });
 
-        delete subuser.password
+        delete subuser.password;
+        const token = signToken({ _id: subuser._id, email: subuser.email });
 
         res.send({
             success: true,
             user: subuser,
+            token,
         });
     }),
 };

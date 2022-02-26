@@ -6,6 +6,7 @@ module.exports = {
         lastname: Joi.string().required(),
         email: Joi.string().email().required(),
         role: Joi.string().required(),
+        investorId: Joi.string().required(),
         weekDayFromTime: Joi.string().required(),
         weekDayToTime: Joi.string().required(),
         satFromTime: Joi.string().required(),
