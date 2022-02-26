@@ -7,14 +7,32 @@ const _ = require("lodash");
 module.exports = {
     getUserDetails: catchAsync(async (req, res) => {
         const { email } = req.user;
-        const user = await Investor.findOne({ email }).select("-password");
+        let user = await Investor.findOne({ email }).select("-password");
 
-        res.status(200).json({
-            success: true,
-            message: `Login Successfull.`,
-            user,
-            token: user.generateAuthToken(),
-        });
+        if (!user) {
+            user = await SubUser.findOne({ email }).select("-password"); // select expiclity password
+
+            if (!user)
+                return res.status(404).send({
+                    success: false,
+                    message: `Login not Successfull.`,
+                });
+
+            res.status(200).json({
+                success: true,
+                message: `Login Successfull.`,
+                user,
+                token: user.generateAuthToken(),
+            });
+            return;
+        } else {
+            res.status(200).json({
+                success: true,
+                message: `Login Successfull.`,
+                user,
+                token: user.generateAuthToken(),
+            });
+        }
     }),
 
     loginInvestor: catchAsync(async (req, res) => {
@@ -59,6 +77,7 @@ module.exports = {
                 ]),
                 token: user.generateAuthToken(),
             });
+            return;
         }
 
         if (user.loginType !== "email")
