@@ -1,4 +1,5 @@
 const Investor = require("../models/Investor");
+const SubUser = require("../models/SubUser");
 const catchAsync = require("../utils/catchAsync");
 const bcrypt = require("bcrypt");
 const _ = require("lodash");
@@ -18,12 +19,47 @@ module.exports = {
 
     loginInvestor: catchAsync(async (req, res) => {
         const { email, password } = req.body;
-        const user = await Investor.findOne({ email }).select("+password"); // select expiclity password
+        let user = await Investor.findOne({ email }).select("+password"); // select expiclity password
 
-        if (!user)
-            return res
-                .status(400)
-                .send({ success: false, message: "Wrong credentials" });
+        if (!user) {
+            user = await SubUser.findOne({ email }).select("+password"); // select expiclity password
+
+            if (!user)
+                return res
+                    .status(400)
+                    .send({ success: false, message: "Wrong credentials" });
+
+            if (!user.activated)
+                return res.status(400).send({
+                    success: false,
+                    message: "Please use email sent to activate your account",
+                });
+
+            let valid = await user.correctPassword(password, user.password);
+            if (!valid)
+                return res.status(400).send({
+                    success: false,
+                    message: "Invalid email or password...",
+                });
+
+            res.status(200).json({
+                success: true,
+                message: `Login Successfull.`,
+                user: _.pick(user, [
+                    "_id",
+                    "name",
+                    "plan",
+                    "email",
+                    "loginType",
+                    "role",
+                    "createdAt",
+                    "activated",
+                    "type",
+                    "investorId",
+                ]),
+                token: user.generateAuthToken(),
+            });
+        }
 
         if (user.loginType !== "email")
             return res.status(400).send({
@@ -65,9 +101,11 @@ module.exports = {
         const user = await Investor.findOne({ email }).select("+password"); // select expiclity password
 
         if (!user)
-            return res
-                .status(400)
-                .send({ success: false, message: "An account with the info does not exist. Please signup" });
+            return res.status(400).send({
+                success: false,
+                message:
+                    "An account with the info does not exist. Please signup",
+            });
 
         if (user.loginType !== "google")
             return res.status(400).send({
@@ -97,14 +135,16 @@ module.exports = {
             return res
                 .status(400)
                 .send({ success: false, message: "email is required" });
-                
+
         const { email } = req.body;
         const user = await Investor.findOne({ email }).select("+password"); // select expiclity password
 
         if (!user)
-            return res
-                .status(400)
-                .send({ success: false, message: "An account with the info does not exist. Please signup" });
+            return res.status(400).send({
+                success: false,
+                message:
+                    "An account with the info does not exist. Please signup",
+            });
 
         if (user.loginType !== "facebook")
             return res.status(400).send({
@@ -182,9 +222,10 @@ module.exports = {
         // Check if user email or username exists
         let user = await Investor.findOne({ email });
         if (user)
-            return res
-                .status(400)
-                .send({ success: false, message: "An account with that email already exists" });
+            return res.status(400).send({
+                success: false,
+                message: "An account with that email already exists",
+            });
 
         user = await Investor.create({
             name,
@@ -226,9 +267,10 @@ module.exports = {
         // Check if user email or username exists
         let user = await Investor.findOne({ email });
         if (user)
-            return res
-                .status(400)
-                .send({ success: false, message: "An account with that email already exists" });
+            return res.status(400).send({
+                success: false,
+                message: "An account with that email already exists",
+            });
 
         user = await Investor.create({
             name,
@@ -254,5 +296,4 @@ module.exports = {
             token: user.generateAuthToken(),
         });
     }),
-    
 };

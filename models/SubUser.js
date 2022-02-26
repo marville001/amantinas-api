@@ -94,6 +94,15 @@ const subUserSchema = new mongoose.Schema({
     },
 });
 
+subUserSchema.methods.generateAuthToken = function () {
+    const token = jwt.sign(
+        { _id: this._id, email: this.email, role: this.role, plan: this.plan },
+        process.env.JWT_SECRET,
+        { expiresIn: "24h" }
+    );
+    return token;
+};
+
 // Method for creating an activation link token
 subUserSchema.methods.createAccountActivationLink = function () {
     const activationToken = crypto.randomBytes(32).toString("hex");

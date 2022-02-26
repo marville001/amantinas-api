@@ -5,7 +5,6 @@ const bcrypt = require("bcrypt");
 const SubUser = require("../models/SubUser");
 const Investor = require("../models/Investor");
 const sendEmail = require("../utils/sendEmail");
-const signToken = require("../utils/signToken");
 
 module.exports = {
     getSubUsers: catchAsync(async (req, res) => {
@@ -85,14 +84,21 @@ module.exports = {
         subuser.password = await bcrypt.hash(req.body.password, salt);
         subuser.activationToken = "";
         await subuser.save({ validateBeforeSave: false });
-
-        delete subuser.password;
-        const token = signToken({ _id: subuser._id, email: subuser.email });
-
         res.send({
             success: true,
-            user: subuser,
-            token,
+            user: _.pick(subuser, [
+                "_id",
+                "name",
+                "plan",
+                "email",
+                "loginType",
+                "role",
+                "createdAt",
+                "activated",
+                "type",
+                "investorId",
+            ]),
+            token: subuser.generateAuthToken(),
         });
     }),
 };
