@@ -198,4 +198,22 @@ module.exports = {
             column,
         });
     }),
+    deleteBoardColumnItem: catchAsync(async (req, res) => {
+        const { id } = req.params;
+        let item = await BoardColumn.findById(id);
+
+        if (!item)
+            return res
+                .status(400)
+                .send({ success: false, message: "Invalid item Id" });
+
+        await BoardColumn.findByIdAndDelete(
+            id
+        );
+
+        res.status(200).json({
+            success: true,
+            message: `Successfull.`,
+        });
+    }),
 };

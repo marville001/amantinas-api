@@ -19,6 +19,7 @@ const {
     renameColumn,
     createBoardColumnItem,
     updateBoardItemColumn,
+    deleteBoardColumnItem,
 } = require("../controllers/board");
 
 router.get("/", auth, schemaValidator(getBoardsSchema, "query"), getBoards);
@@ -50,6 +51,12 @@ router.put(
     auth,
     schemaValidator(renameColumnSchema, "body"),
     renameColumn
+);
+
+router.delete(
+    "/column/item/:id",
+    auth,
+    deleteBoardColumnItem
 );
 
 
