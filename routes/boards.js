@@ -54,7 +54,7 @@ router.put(
 );
 
 router.delete(
-    "/column/item/:id",
+    "/column/:columnId/:itemId",
     auth,
     deleteBoardColumnItem
 );

@@ -199,21 +199,30 @@ module.exports = {
         });
     }),
     deleteBoardColumnItem: catchAsync(async (req, res) => {
-        const { id } = req.params;
-        let item = await BoardColumn.findById(id);
+        const { columnId, itemId } = req.params;
+        let column = await BoardColumn.findById(columnId);
 
-        if (!item)
-            return res
-                .status(400)
-                .send({ success: false, message: "Invalid item Id" });
+        console.log({ column, itemId });
 
-        await BoardColumn.findByIdAndDelete(
-            id
+        const items = column.items.filter((item) => item._id !== itemId);
+
+        column = await BoardColumn.findByIdAndUpdate(
+            columnId,
+            {
+                $set: {
+                    items,
+                },
+            },
+            {
+                new: true,
+                runValidators: true,
+            }
         );
 
         res.status(200).json({
             success: true,
             message: `Successfull.`,
+            column,
         });
     }),
 };
