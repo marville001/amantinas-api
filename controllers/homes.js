@@ -87,4 +87,22 @@ module.exports = {
             home,
         });
     }),
+    deleteProspect: catchAsync(async (req, res) => {
+        const { homeId } = req.params;
+        let home = await Home.findById(homeId);
+
+        if (!home)
+            return res
+                .status(400)
+                .send({ success: false, message: "Invalid home Id" });
+
+        await Home.findByIdAndDelete(
+            homeId
+        );
+
+        res.status(200).json({
+            success: true,
+            message: `Successfull.`,
+        });
+    }),
 };
