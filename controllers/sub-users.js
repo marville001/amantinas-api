@@ -8,8 +8,9 @@ const sendEmail = require("../utils/sendEmail");
 
 module.exports = {
     getSubUsers: catchAsync(async (req, res) => {
-
-        const subusers = await SubUser.find({investorId: req.params.investorId}).select("-password");
+        const subusers = await SubUser.find({
+            investorId: req.params.investorId,
+        }).select("-password");
         // select expiclity password
 
         res.status(200).json({
@@ -99,6 +100,22 @@ module.exports = {
                 "investorId",
             ]),
             token: subuser.generateAuthToken(),
+        });
+    }),
+    deleteSubUser: catchAsync(async (req, res) => {
+        const { id } = req.params;
+        let subuser = await SubUser.findById(id);
+
+        if (!subuser)
+            return res
+                .status(400)
+                .send({ success: false, message: "Invalid subuser Id" });
+
+        await SubUser.findByIdAndDelete(id);
+
+        res.status(200).json({
+            success: true,
+            message: `Successfull.`,
         });
     }),
 };
