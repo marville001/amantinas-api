@@ -141,7 +141,7 @@ module.exports = {
         });
     }),
 
-    updateBoardItemColumn: catchAsync(async (req, res) => {
+    updateBoardItemColumnPosition: catchAsync(async (req, res) => {
         const { from, to, index, itemId } = req.body;
         let columnFrom = await BoardColumn.findById(from);
         let columnTo = await BoardColumn.findById(to);
@@ -207,6 +207,45 @@ module.exports = {
         const items = column.items.filter((item) => item._id !== itemId);
 
         column = await BoardColumn.findByIdAndUpdate(
+            columnId,
+            {
+                $set: {
+                    items,
+                },
+            },
+            {
+                new: true,
+                runValidators: true,
+            }
+        );
+
+        res.status(200).json({
+            success: true,
+            message: `Successfull.`,
+            column,
+        });
+    }),
+    updateBoardItemColumnDetails: catchAsync(async (req, res) => {
+        const { columnId } = req.params;
+        let column = await BoardColumn.findById(columnId);
+
+        let items = [];
+
+        if (!column)
+            return res
+                .status(400)
+                .send({ success: false, message: "Invalid column id" });
+
+        // Update item that match id details
+        items = column.items.map((item) => {
+            if (item._id === req.body.itemId) {
+                if (req.body.title) item.title = req.body.title;
+                if (req.body.description) item.description = req.body.description;
+            }
+            return item;
+        });
+
+        await BoardColumn.findByIdAndUpdate(
             columnId,
             {
                 $set: {

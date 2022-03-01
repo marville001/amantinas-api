@@ -23,4 +23,9 @@ module.exports = {
         to: Joi.string().required(),
         index: Joi.number().required(),
     }),
+    updateBoardColumnItemDetailsSchema: Joi.object().keys({
+        itemId: Joi.string().required(),
+        title: Joi.string().allow(""),
+        description: Joi.string().allow(""),
+    }),
 };
