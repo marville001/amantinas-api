@@ -7,7 +7,7 @@ const { createScrape, getScrapes } = require("../controllers/scrape");
 const schemaValidator = require("../middlewares/schemaValidator");
 const { createScrapeSchema } = require("../schemas/scrape");
 
-router.get("/", auth, getScrapes);
+router.get("/:investorId", auth, getScrapes);
 
 router.post(
     "/",

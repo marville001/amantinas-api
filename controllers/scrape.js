@@ -3,12 +3,7 @@ const catchAsync = require("../utils/catchAsync");
 
 module.exports = {
     getScrapes: catchAsync(async (req, res) => {
-        if (!req.body.investorId)
-            return res.status(400).send({
-                success: false,
-                message: "Please provide investor id",
-            });
-        const { investorId } = req.body;
+        const { investorId } = req.params;
         const scrapes = await Scrape.find({ investorId });
         // select expiclity password
 
