@@ -38,6 +38,14 @@ const transactionSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
+    isCustom: {
+        type: Boolean,
+        default: false,
+    },
+    interval: {
+        type: String,
+        default: "",
+    },
     endDate: {
         type: String,
         default: "",

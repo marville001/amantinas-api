@@ -17,5 +17,7 @@ module.exports = {
         recurring: Joi.boolean().required(),
         startDate: Joi.string(),
         endDate: Joi.string(),
+        isCustom: Joi.boolean(),
+        interval: Joi.string(),
     }),
 };
