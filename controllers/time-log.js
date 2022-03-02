@@ -12,9 +12,9 @@ module.exports = {
         const timelog = await TimeLog.find({ userId });
         // select expiclity password
 
-        let today =  new Date(Date.now()).getDay();
+        let today =  new Date(Date.now()).toDateString();
 
-        let log = timelog.find(t=>new Date(t.timeIn).getDay() === today)
+        let log = timelog.find(t=>new Date(t.timeIn).toDateString() === today)
 
         res.status(200).json({
             success: true,
