@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 
 let DB_URL = process.env.DB_URL;
 
-console.log(`DB_URL`, DB_URL);
 
 module.exports = () => {
     console.log("connecting to DB...");

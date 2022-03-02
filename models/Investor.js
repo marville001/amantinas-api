@@ -68,12 +68,10 @@ investorSchema.methods.generateAuthToken = function () {
 
 investorSchema.methods.createAccountActivationToken = function () {
     const activationToken = crypto.randomBytes(32).toString("hex");
-    // console.log(activationToken);
     this.activationToken = crypto
         .createHash("sha256")
         .update(activationToken)
         .digest("hex");
-    // console.log({ activationToken }, this.activationToken);
     return activationToken;
 };
 
@@ -88,8 +86,6 @@ investorSchema.methods.correctPassword = async function (
 // Create a reset token for each user
 investorSchema.methods.createPasswordResetToken = function () {
     const resetToken = crypto.randomBytes(32).toString("hex");
-
-    console.log({ resetToken });
 
     this.passwordResetToken = crypto
         .createHash("sha256")

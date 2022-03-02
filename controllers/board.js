@@ -202,8 +202,6 @@ module.exports = {
         const { columnId, itemId } = req.params;
         let column = await BoardColumn.findById(columnId);
 
-        console.log({ column, itemId });
-
         const items = column.items.filter((item) => item._id !== itemId);
 
         column = await BoardColumn.findByIdAndUpdate(
