@@ -57,6 +57,10 @@ const scrapeSchema = new mongoose.Schema({
         type: String,
         default: Date.now(),
     },
+    isRun:{
+        type: Boolean,
+        default: true
+    }
 });
 
 const Scrape = mongoose.model("Scrape", scrapeSchema);
