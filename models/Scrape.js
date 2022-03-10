@@ -59,8 +59,12 @@ const scrapeSchema = new mongoose.Schema({
     },
     isRun:{
         type: Boolean,
-        default: true
-    }
+        default: false
+    },
+    homesCount: {
+        type: Number,
+        default: 0,
+    },
 });
 
 const Scrape = mongoose.model("Scrape", scrapeSchema);
