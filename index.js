@@ -17,6 +17,7 @@ const homesRoutes = require("./routes/homes");
 const suggestionsRoutes = require("./routes/suggestions");
 const boardsRoutes = require("./routes/boards");
 const transactionsRoutes = require("./routes/transactions");
+const invoiceRoutes = require("./routes/invoice");
 const usersRoutes = require("./routes/users");
 const timeLogRoutes = require("./routes/time-log");
 
@@ -71,6 +72,7 @@ app.use("/v1/api/homes", homesRoutes);
 app.use("/v1/api/suggestions", suggestionsRoutes);
 app.use("/v1/api/boards", boardsRoutes);
 app.use("/v1/api/transactions", transactionsRoutes);
+app.use("/v1/api/invoice", invoiceRoutes);
 app.use("/v1/api/users", usersRoutes);
 app.use("/v1/api/time-log", timeLogRoutes);
 
