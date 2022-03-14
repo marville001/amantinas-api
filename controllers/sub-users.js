@@ -10,7 +10,7 @@ module.exports = {
     getSubUsers: catchAsync(async (req, res) => {
         const subusers = await SubUser.find({
             investorId: req.params.investorId,
-        }).select("-password");
+        }).select("-password").sort([["createdAt", -1]]);
         // select expiclity password
 
         res.status(200).json({

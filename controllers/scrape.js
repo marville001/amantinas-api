@@ -4,7 +4,7 @@ const catchAsync = require("../utils/catchAsync");
 module.exports = {
     getScrapes: catchAsync(async (req, res) => {
         const { investorId } = req.params;
-        const scrapes = await Scrape.find({ investorId });
+        const scrapes = await Scrape.find({ investorId }).sort([["createdAt", -1]]);
         // select expiclity password
 
         res.status(200).json({

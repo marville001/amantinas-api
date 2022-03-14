@@ -19,7 +19,8 @@ module.exports = {
             },
             {},
             query
-        );
+        ).sort([["createdAt", -1]]);
+
         const total = await Transaction.find({
             investorId,
         });

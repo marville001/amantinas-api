@@ -7,7 +7,7 @@ module.exports = {
         const { investorId } = req.params;
         const homes = await Home.find({
             investorId,
-        });
+        }).sort([["createdAt", -1]]);
 
         res.status(200).json({
             success: true,
