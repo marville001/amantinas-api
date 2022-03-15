@@ -1,4 +1,5 @@
 const Home = require("../models/Homes");
+const ScrapedHomes = require("../models/ScrapedHomes");
 const catchAsync = require("../utils/catchAsync");
 const crypto = require("crypto");
 
@@ -6,6 +7,18 @@ module.exports = {
     getHomes: catchAsync(async (req, res) => {
         const { investorId } = req.params;
         const homes = await Home.find({
+            investorId,
+        }).sort([["createdAt", -1]]);
+
+        res.status(200).json({
+            success: true,
+            message: `Successfull.`,
+            homes,
+        });
+    }),
+    getScrapedHomes: catchAsync(async (req, res) => {
+        const { investorId } = req.params;
+        const homes = await ScrapedHomes.find({
             investorId,
         }).sort([["createdAt", -1]]);
 
