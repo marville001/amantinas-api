@@ -25,6 +25,10 @@ const invoiceSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    business: {
+        type: String,
+        default: "",
+    },
     type: {
         type: String,
         enum: ["income", "expense"],

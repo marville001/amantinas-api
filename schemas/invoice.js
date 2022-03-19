@@ -19,5 +19,6 @@ module.exports = {
         endDate: Joi.string(),
         isCustom: Joi.boolean(),
         interval: Joi.string(),
+        business: Joi.string().allow(''),
     }),
 };
