@@ -40,6 +40,7 @@ module.exports = {
             date,
             recurring,
             amount,
+            business,
             description,
             type,
         } = req.body;
@@ -56,6 +57,7 @@ module.exports = {
             date,
             recurring,
             amount,
+            business,
             description,
             type,
             startDate: recurring ? req.body.startDate : "",
