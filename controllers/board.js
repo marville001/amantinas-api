@@ -116,7 +116,7 @@ module.exports = {
             ...column.items,
             {
                 title,
-                image: imageLink,
+                image: `https://amantinas-api.herokuapp.com/static/${imageLink}`,
                 description,
                 _id: id,
             },
