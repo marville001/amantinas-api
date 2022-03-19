@@ -62,7 +62,7 @@ module.exports = {
             bedrooms,
             bathrooms,
             price,
-            images: [imageLink],
+            images: [`https://amantinas-api.herokuapp.com/static/${imageLink}`],
         });
 
         prospect.save({ validateBeforeSave: false });
