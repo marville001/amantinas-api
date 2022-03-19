@@ -3,6 +3,7 @@ const Joi = require("joi");
 module.exports = {
     createScrapeSchema: Joi.object().keys({
         investorId: Joi.string().required(),
+        from: Joi.string().required(),
         country: Joi.string().allow(""),
         zipcode: Joi.string().allow(""),
         state: Joi.string().allow(""),

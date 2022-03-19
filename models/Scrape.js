@@ -57,13 +57,17 @@ const scrapeSchema = new mongoose.Schema({
         type: String,
         default: Date.now(),
     },
-    isRun:{
+    isRun: {
         type: Boolean,
-        default: false
+        default: false,
     },
     homesCount: {
         type: Number,
         default: 0,
+    },
+    from: {
+        type: String,
+        required: true,
     },
 });
 
