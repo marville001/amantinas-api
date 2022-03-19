@@ -10,5 +10,6 @@ module.exports = {
         bedrooms: Joi.string().required(),
         bathrooms: Joi.string().required(),
         price: Joi.string().required(),
+        image: Joi.allow(),
     }),
 };

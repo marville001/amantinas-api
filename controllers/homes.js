@@ -36,11 +36,16 @@ module.exports = {
                 .send({ success: false, message: "No 'image' selected" });
         }
 
-        const id = crypto.randomBytes(8).toString("hex");
-
         const { image } = req.files;
-        const imageLink = `${id + "_" + image.name}`;
-        image.mv(`uploads/${imageLink}`);
+        let images = [];
+        for (let item of image) {
+            const id = crypto.randomBytes(8).toString("hex");
+            const imageLink = `${id + "_" + item.name}`;
+            item.mv(`uploads/${imageLink}`);
+            images.push(
+                `https://amantinas-api.herokuapp.com/static/${imageLink}`
+            );
+        }
 
         const {
             investorId,
@@ -62,7 +67,7 @@ module.exports = {
             bedrooms,
             bathrooms,
             price,
-            images: [`https://amantinas-api.herokuapp.com/static/${imageLink}`],
+            images,
         });
 
         prospect.save({ validateBeforeSave: false });
@@ -109,9 +114,7 @@ module.exports = {
                 .status(400)
                 .send({ success: false, message: "Invalid home Id" });
 
-        await Home.findByIdAndDelete(
-            homeId
-        );
+        await Home.findByIdAndDelete(homeId);
 
         res.status(200).json({
             success: true,
