@@ -14,18 +14,36 @@ module.exports = {
             success: true,
             message: `Successfull.`,
             homes,
+            total: homes.length,
         });
     }),
     getScrapedHomes: catchAsync(async (req, res) => {
+        const pagesize = req.query.pageSize || 10;
+        const page = req.query.activePage || 1;
+
+        const query = {
+            skip: pagesize * (page > 0 ? page - 1 : 1),
+            limit: pagesize,
+        };
+
         const { investorId } = req.params;
-        const homes = await ScrapedHomes.find({
+        const homes = await ScrapedHomes.find(
+            {
+                investorId,
+            },
+            {},
+            query
+        ).sort([["createdAt", -1]]);
+
+        const total = await ScrapedHomes.find({
             investorId,
-        }).sort([["createdAt", -1]]);
+        });
 
         res.status(200).json({
             success: true,
             message: `Successfull.`,
             homes,
+            total: total.length,
         });
     }),
 
